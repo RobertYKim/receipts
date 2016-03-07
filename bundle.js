@@ -19686,7 +19686,8 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1),
-	    ShoppingCartList = __webpack_require__(161);
+	    ShoppingCartList = __webpack_require__(161),
+	    css = __webpack_require__(165);
 	
 	var Root = React.createClass({
 	  displayName: 'Root',
@@ -19706,7 +19707,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	          'title',
 	          null,
 	          this.props.title
-	        )
+	        ),
+	        React.createElement('style', { dangerouslySetInnerHTML: { __html: css } })
 	      ),
 	      React.createElement(
 	        'body',
@@ -19741,7 +19743,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var React = __webpack_require__(1),
 	    ShoppingCart = __webpack_require__(162),
-	    data = __webpack_require__(163);
+	    data = __webpack_require__(164);
 	
 	var ShoppingCartList = React.createClass({
 	  displayName: 'ShoppingCartList',
@@ -19774,7 +19776,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1),
-	    Receipt = __webpack_require__(164);
+	    Receipt = __webpack_require__(163);
 	
 	var ShoppingCart = React.createClass({
 	  displayName: 'ShoppingCart',
@@ -19815,36 +19817,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 163 */
-/***/ function(module, exports) {
-
-	module.exports = {
-		"shoppingCarts": [
-			{
-				"items": [
-					"1 book at 12.49",
-					"1 music CD at 14.99",
-					"1 chocolate bar at 0.85"
-				]
-			},
-			{
-				"items": [
-					"1 imported box of chocolates at 10.00",
-					"1 imported bottle of perfume at 47.50"
-				]
-			},
-			{
-				"items": [
-					"1 imported bottle of perfume at 27.99",
-					"1 bottle of perfume at 18.99",
-					"1 packet of migraine pills at 9.75",
-					"1 box of imported chocolates at 11.25"
-				]
-			}
-		]
-	};
-
-/***/ },
-/* 164 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -19932,6 +19904,106 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 	
 	module.exports = Receipt;
+
+/***/ },
+/* 164 */
+/***/ function(module, exports) {
+
+	module.exports = {
+		"shoppingCarts": [
+			{
+				"items": [
+					"1 book at 12.49",
+					"1 music CD at 14.99",
+					"1 chocolate bar at 0.85"
+				]
+			},
+			{
+				"items": [
+					"1 imported box of chocolates at 10.00",
+					"1 imported bottle of perfume at 47.50"
+				]
+			},
+			{
+				"items": [
+					"1 imported bottle of perfume at 27.99",
+					"1 bottle of perfume at 18.99",
+					"1 packet of migraine pills at 9.75",
+					"1 box of imported chocolates at 11.25"
+				]
+			}
+		]
+	};
+
+/***/ },
+/* 165 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(166)();
+	// imports
+	
+	
+	// module
+	exports.push([module.id, "h1{font-family:sans-serif}", ""]);
+	
+	// exports
+
+
+/***/ },
+/* 166 */
+/***/ function(module, exports) {
+
+	/*
+		MIT License http://www.opensource.org/licenses/mit-license.php
+		Author Tobias Koppers @sokra
+	*/
+	// css base code, injected by the css-loader
+	module.exports = function() {
+		var list = [];
+	
+		// return the list of modules as css string
+		list.toString = function toString() {
+			var result = [];
+			for(var i = 0; i < this.length; i++) {
+				var item = this[i];
+				if(item[2]) {
+					result.push("@media " + item[2] + "{" + item[1] + "}");
+				} else {
+					result.push(item[1]);
+				}
+			}
+			return result.join("");
+		};
+	
+		// import a list of modules into the list
+		list.i = function(modules, mediaQuery) {
+			if(typeof modules === "string")
+				modules = [[null, modules, ""]];
+			var alreadyImportedModules = {};
+			for(var i = 0; i < this.length; i++) {
+				var id = this[i][0];
+				if(typeof id === "number")
+					alreadyImportedModules[id] = true;
+			}
+			for(i = 0; i < modules.length; i++) {
+				var item = modules[i];
+				// skip already imported module
+				// this implementation is not 100% perfect for weird media query combinations
+				//  when a module is imported multiple times with different media queries.
+				//  I hope this will never occur (Hey this way we have smaller bundles)
+				if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+					if(mediaQuery && !item[2]) {
+						item[2] = mediaQuery;
+					} else if(mediaQuery) {
+						item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+					}
+					list.push(item);
+				}
+			}
+		};
+		return list;
+	};
+
 
 /***/ }
 /******/ ])

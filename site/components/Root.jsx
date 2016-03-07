@@ -1,5 +1,6 @@
 var React = require('react'),
-    ShoppingCartList = require('./ShoppingCartList');
+    ShoppingCartList = require('./ShoppingCartList'),
+    css = require('../../css/styles.css');
 
 var Root = React.createClass({
   render: function () {
@@ -11,6 +12,7 @@ var Root = React.createClass({
       <html>
         <head>
           <title>{this.props.title}</title>
+          <style dangerouslySetInnerHTML={{ __html: css }} />
         </head>
         <body>
           <ShoppingCartList />

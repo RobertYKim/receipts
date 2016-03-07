@@ -1,4 +1,14 @@
-/******/ (function(modules) { // webpackBootstrap
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory();
+	else if(typeof define === 'function' && define.amd)
+		define([], factory);
+	else {
+		var a = factory();
+		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
+	}
+})(this, function() {
+return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
@@ -44,24 +54,22 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(1);
-	var ReactDOM = __webpack_require__(158);
+	var React = __webpack_require__(1),
+	    ReactDOM = __webpack_require__(158),
+	    ReactDOMServer = __webpack_require__(159),
+	    Root = __webpack_require__(160);
 	
-	var App = React.createClass({
-	  displayName: 'App',
+	// Server-side creation of the initial static HTML page
+	module.exports = function render(locals, callback) {
+	  var html = ReactDOMServer.renderToString(React.createElement(Root, locals));
+	  callback(null, '<!DOCTYPE html>' + html);
+	};
 	
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      null,
-	      'App Component'
-	    );
-	  }
-	});
-	
-	document.addEventListener("DOMContentLoaded", function () {
-	  ReactDOM.render(React.createElement(App, null), document.getElementById('root'));
-	});
+	// Client-side JS
+	if (typeof document !== 'undefined') {
+	  var initialProps = JSON.parse(document.getElementById('initial-props').innerHTML);
+	  ReactDOM.render(React.createElement(Root, initialProps), document);
+	}
 
 /***/ },
 /* 1 */
@@ -19664,6 +19672,269 @@
 	module.exports = __webpack_require__(3);
 
 
+/***/ },
+/* 159 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	module.exports = __webpack_require__(148);
+
+
+/***/ },
+/* 160 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    ShoppingCartList = __webpack_require__(161);
+	
+	var Root = React.createClass({
+	  displayName: 'Root',
+	
+	  render: function () {
+	    var initialProps = {
+	      __html: safeStringify(this.props)
+	    };
+	
+	    return React.createElement(
+	      'html',
+	      null,
+	      React.createElement(
+	        'head',
+	        null,
+	        React.createElement(
+	          'title',
+	          null,
+	          this.props.title
+	        )
+	      ),
+	      React.createElement(
+	        'body',
+	        null,
+	        React.createElement(ShoppingCartList, null),
+	        React.createElement('script', {
+	          id: 'initial-props',
+	          type: 'application/json',
+	          dangerouslySetInnerHTML: initialProps }),
+	        React.createElement('script', { src: 'bundle.js' })
+	      )
+	    );
+	  }
+	});
+	
+	function safeStringify(obj) {
+	  // Copy props without webpackStats, which causes circular JSON error
+	  var objWithoutStats = {};
+	  for (var key in obj) {
+	    if (key !== "webpackStats") {
+	      objWithoutStats[key] = obj[key];
+	    }
+	  }
+	  return JSON.stringify(objWithoutStats).replace(/<\/script/g, '<\\/script').replace(/<!--/g, '<\\!--');
+	}
+	
+	module.exports = Root;
+
+/***/ },
+/* 161 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    ShoppingCart = __webpack_require__(162),
+	    data = __webpack_require__(163);
+	
+	var ShoppingCartList = React.createClass({
+	  displayName: 'ShoppingCartList',
+	
+	  createCarts: function () {
+	    var result = [];
+	    var idx = 1;
+	    data.shoppingCarts.forEach(function (cart) {
+	      result.push(React.createElement(ShoppingCart, { cart: cart, key: idx, id: idx }));
+	      idx++;
+	    });
+	
+	    return result;
+	  },
+	
+	  render: function () {
+	    var carts = this.createCarts();
+	    return React.createElement(
+	      'div',
+	      null,
+	      carts
+	    );
+	  }
+	});
+	
+	module.exports = ShoppingCartList;
+
+/***/ },
+/* 162 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    Receipt = __webpack_require__(164);
+	
+	var ShoppingCart = React.createClass({
+	  displayName: 'ShoppingCart',
+	
+	  toggleReceipt: function () {
+	    var showReceipt = !this.state.showReceipt;
+	    this.setState({ showReceipt: showReceipt });
+	  },
+	
+	  getInitialState: function () {
+	    return { showReceipt: false };
+	  },
+	
+	  render: function () {
+	    var receipt;
+	    if (this.state.showReceipt) {
+	      receipt = React.createElement(Receipt, { cart: this.props.cart });
+	    }
+	
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'h1',
+	        { onClick: this.toggleReceipt },
+	        'Cart ',
+	        this.props.id,
+	        ': ',
+	        this.props.cart.items.length,
+	        ' items'
+	      ),
+	      receipt
+	    );
+	  }
+	});
+	
+	module.exports = ShoppingCart;
+
+/***/ },
+/* 163 */
+/***/ function(module, exports) {
+
+	module.exports = {
+		"shoppingCarts": [
+			{
+				"items": [
+					"1 book at 12.49",
+					"1 music CD at 14.99",
+					"1 chocolate bar at 0.85"
+				]
+			},
+			{
+				"items": [
+					"1 imported box of chocolates at 10.00",
+					"1 imported bottle of perfume at 47.50"
+				]
+			},
+			{
+				"items": [
+					"1 imported bottle of perfume at 27.99",
+					"1 bottle of perfume at 18.99",
+					"1 packet of migraine pills at 9.75",
+					"1 box of imported chocolates at 11.25"
+				]
+			}
+		]
+	};
+
+/***/ },
+/* 164 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var Receipt = React.createClass({
+	  displayName: "Receipt",
+	
+	  createReceipt: function () {
+	    var lineItems = [];
+	    var salesTax = 0;
+	    var total = 0;
+	    var idx = 0;
+	
+	    this.props.cart.items.forEach(function (item) {
+	      var splitLine = item.split(" at ");
+	      var itemDetails = splitLine[0];
+	      var itemCost = splitLine[1];
+	      var itemTax = this.calculateTax(itemDetails, itemCost);
+	      var itemTotal = (parseFloat(itemCost) + parseFloat(itemTax)).toFixed(2);
+	
+	      var receiptLine = itemDetails + ": " + itemTotal;
+	      lineItems.push(React.createElement(
+	        "li",
+	        { key: idx },
+	        receiptLine
+	      ));
+	
+	      salesTax += parseFloat(itemTax);
+	      total += parseFloat(itemTotal);
+	      idx++;
+	    }.bind(this));
+	
+	    lineItems.push(React.createElement(
+	      "li",
+	      { key: idx },
+	      "Sales Taxes: ",
+	      salesTax.toFixed(2)
+	    ));
+	    idx++;
+	    lineItems.push(React.createElement(
+	      "li",
+	      { key: idx },
+	      "Total: ",
+	      total.toFixed(2)
+	    ));
+	
+	    return lineItems;
+	  },
+	
+	  calculateTax: function (itemDetails, itemCost) {
+	    var exempt = /(book|chocolate|pills)/;
+	    var imported = /imported/;
+	    var salesTax = exempt.test(itemDetails) ? 0 : 0.1;
+	    var duty = imported.test(itemDetails) ? 0.05 : 0;
+	    var taxRate = salesTax + duty;
+	
+	    var tax = (parseFloat(itemCost) * taxRate).toFixed(2);
+	    return this.roundUp(tax);
+	  },
+	
+	  roundUp: function (string) {
+	    var tax = string;
+	    var nextNickel = /[1-4]/;
+	    var nextDime = /[6-9]/;
+	    var lastDigitIdx = tax.length - 1;
+	    var lastDigit = parseInt(tax[lastDigitIdx]);
+	    if (nextNickel.test(lastDigit)) {
+	      tax = string.slice(0, -1) + "5";
+	    } else if (nextDime.test(lastDigit)) {
+	      tax = string.slice(0, -1) + "0";
+	      tax = (parseFloat(tax) + 0.1).toFixed(2);
+	    }
+	    return tax;
+	  },
+	
+	  render: function () {
+	    var receipt = this.createReceipt();
+	
+	    return React.createElement(
+	      "ul",
+	      null,
+	      receipt
+	    );
+	  }
+	});
+	
+	module.exports = Receipt;
+
 /***/ }
-/******/ ]);
+/******/ ])
+});
+;
 //# sourceMappingURL=bundle.js.map

@@ -1,9 +1,12 @@
+var StaticSiteGeneratorPlugin = require('static-site-generator-webpack-plugin');
+var data = require('./site/data');
+
 module.exports = {
-  context: __dirname,
-  entry: "./js/app.jsx",
+  entry: "./site/entry.js",
   output: {
-    path: "./js/",
-    filename: "bundle.js"
+    filename: "bundle.js",
+    path: __dirname,
+    libraryTarget: "umd"
   },
   module: {
     loaders: [
@@ -14,11 +17,15 @@ module.exports = {
         query: {
           presets: ['react']
         }
-      }
+      },
+      { test: /\.json$/, loader: 'json-loader' }
     ]
   },
-  devtool: 'source-map',
+  plugins: [
+    new StaticSiteGeneratorPlugin('bundle.js', data.routes, data)
+  ],
   resolve: {
     extensions: ["", ".js", ".jsx"]
-  }
+  },
+  devtool: 'source-map'
 };

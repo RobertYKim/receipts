@@ -76,3 +76,15 @@ body {
   padding-bottom: 60px;
   padding-left: 20px;
 }
+
+/* --- MOBILE RESPONSIVE --- */
+@media (max-width: 1000px) {
+  .shopping-cart-list {
+    margin-top: 50px;
+    max-width: 320px;
+  }
+
+  .shopping-cart {
+    float: none;
+  }
+}

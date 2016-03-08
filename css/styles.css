@@ -41,7 +41,7 @@ body {
 .shopping-cart-list {
   margin: auto;
   margin-top: 100px;
-  max-width: 960px;
+  width: 960px;
 }
 
 .shopping-cart {
@@ -78,13 +78,25 @@ body {
 }
 
 /* --- MOBILE RESPONSIVE --- */
-@media (max-width: 1000px) {
+@media only screen and (max-device-width: 736px) {
   .shopping-cart-list {
-    margin-top: 50px;
-    max-width: 320px;
+    width: 100%;
+    margin: 0;
   }
 
   .shopping-cart {
     float: none;
+    margin: 0;
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
+  }
+
+  .shopping-cart h1 {
+    width: 100%;
+    font-size: 100px;
+  }
+
+  .receipt {
+    font-size: 28px;
   }
 }

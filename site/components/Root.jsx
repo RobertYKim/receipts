@@ -1,5 +1,6 @@
 var React = require('react'),
     ShoppingCartList = require('./ShoppingCartList'),
+
     css = require('../../css/styles.css');
 
 var Root = React.createClass({

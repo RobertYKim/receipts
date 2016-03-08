@@ -18,7 +18,7 @@ var ShoppingCart = React.createClass({
     }
 
     return (
-      <div>
+      <div className="shopping-cart">
         <h1 onClick={this.toggleReceipt}>
           Cart {this.props.id}: {this.props.cart.items.length} items
         </h1>

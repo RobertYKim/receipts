@@ -19,7 +19,7 @@ var ShoppingCartList = React.createClass({
   render: function () {
     var carts = this.createCarts();
     return (
-      <div>
+      <div className="shopping-cart-list group">
         {carts}
       </div>
     );

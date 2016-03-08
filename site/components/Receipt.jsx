@@ -59,7 +59,9 @@ var Receipt = React.createClass({
     var receipt = this.createReceipt();
 
     return (
-      <ul>{receipt}</ul>
+      <ul className="receipt">
+        {receipt}
+      </ul>
     );
   }
 });

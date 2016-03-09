@@ -11,6 +11,7 @@
 ## How to Run Locally
 While a live link has been provided for convenience, you can also run the app
 locally on your computer. Simply follow these steps:
+
 1. Clone the repository `git clone https://github.com/RobertYKim/receipts.git`
 2. Unzip the file and navigate to the directory
 3. Run `npm install`
